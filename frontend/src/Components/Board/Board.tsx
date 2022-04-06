@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { BoardRow } from '../../Components/BoardRow/BoardRow';
+import { BoardRow, TileCount } from '../../Components/BoardRow/BoardRow';
 
 const RowCount = 6;
 
@@ -18,7 +18,7 @@ const BoardRows = styled.div(() => ({
   gridGap: 5,
   padding: 10,
   height: '100%',
-  aspectRatio: '5 / 6',
+  aspectRatio: `${TileCount} / ${RowCount}`,
 }))
 
 export const Board = () => {

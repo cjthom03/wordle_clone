@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Tile } from '../../Components/Tile/Tile';
 
-const TileCount = 5;
+export const TileCount = 5;
 
 const Row = styled.div(() => ({
   display: 'grid',
