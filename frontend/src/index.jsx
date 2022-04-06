@@ -10,7 +10,7 @@ import App from './App';
 const appRoutes = (
   <React.Fragment>
     <CssBaseline />
-    <ThemeProvider theme={getTheme('dark')}>
+    <ThemeProvider theme={getTheme('light')}>
       <Router>
         <Routes>
           <Route path="/" element={<App />} />

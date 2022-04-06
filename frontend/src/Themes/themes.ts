@@ -8,6 +8,9 @@ declare module '@mui/material/styles' {
     fill: {
       lightGrey: string,
       darkGrey: string,
+      yellow: string,
+      green: string,
+      contrastText: string,
     }
   }
   // allow configuration using `createTheme`
@@ -18,13 +21,21 @@ declare module '@mui/material/styles' {
     fill: {
       lightGrey: string,
       darkGrey: string,
+      yellow: string,
+      green: string,
+      contrastText: string,
     }
   }
 }
 
-export const getTheme = (mode: string) => mode === 'dark' ? darkTheme : lightTheme;
+const sharedThemeAttributes = {
+  typography: {
+    fontFamily: "Helvetica Neue, Arial, sans-serif",
+  },
+}
 
 const darkTheme = createTheme({
+  ...sharedThemeAttributes,
   palette: {
     mode: 'dark',
     border: {
@@ -33,11 +44,15 @@ const darkTheme = createTheme({
     fill: {
       lightGrey: '#818384',
       darkGrey: '#3a3a3c',
+      yellow: '#b59f3b',
+      green: '#538d4e',
+      contrastText: '#000000de',
     }
   }
 })
 
 const lightTheme = createTheme({
+  ...sharedThemeAttributes,
   palette: {
     mode: 'light',
     border: {
@@ -46,6 +61,12 @@ const lightTheme = createTheme({
     fill: {
       lightGrey: '#d3d6da',
       darkGrey: '#78767e',
+      yellow: '#c9b458',
+      green: '#6aaa64',
+      contrastText: '#fff',
     }
   }
 })
+
+export const getTheme = (mode: string) => mode === 'dark' ? darkTheme : lightTheme;
+
