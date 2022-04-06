@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Typography  } from '@mui/material';
 
+export const HEIGHT = 50;
+
 const Title = styled(Typography).attrs(() => ({
   variant: 'h4',
 }))(({ theme }) =>({
@@ -9,7 +11,7 @@ const Title = styled(Typography).attrs(() => ({
 }))
 
 const Wrapper = styled.div(({ theme }) => ({
-  height: 50,
+  height: HEIGHT,
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
@@ -17,12 +19,10 @@ const Wrapper = styled.div(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.border.grey}`
 }));
 
-const Header = () => {
+export const Header = () => {
   return (
     <Wrapper>
       <Title>Wordle</Title>
     </Wrapper>
   )
 };
-
-export default Header;
