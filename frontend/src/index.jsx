@@ -5,10 +5,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider  } from '@mui/system';
 
 import { getTheme } from './Themes/themes';
+import { GlobalStyles } from './Fonts/fonts.ts';
 import App from './App';
 
 const appRoutes = (
   <React.Fragment>
+    <GlobalStyles />
     <CssBaseline />
     <ThemeProvider theme={getTheme('light')}>
       <Router>

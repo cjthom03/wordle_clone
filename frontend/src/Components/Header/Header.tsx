@@ -8,6 +8,8 @@ const Title = styled(Typography).attrs(() => ({
   variant: 'h4',
 }))(({ theme }) =>({
   color: theme.palette.text.primary,
+  fontSize: '2.3125rem',
+  fontFamily: 'KarnakProCondensed',
 }))
 
 const Wrapper = styled.div(({ theme }) => ({

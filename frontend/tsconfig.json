@@ -12,5 +12,6 @@
     "allowJs": true,
     "moduleResolution": "Node",
     "strict": true
-  }
+  },
+  "include": ["./src/Fonts/fonts.d.ts"]
 }
