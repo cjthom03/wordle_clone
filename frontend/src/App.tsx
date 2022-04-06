@@ -1,6 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
+const Game = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+`
+
 const Title = styled.h1`
   font-size: 1.5em;
   text-align: center;
@@ -8,7 +14,11 @@ const Title = styled.h1`
 `;
 
 const App = () => {
-  return <Title>Hello, Worlds!</Title>;
+  return (
+    <Game>
+      <Title>Hello, Worlds!</Title>
+    </Game>
+  )
 };
 
 export default App;
