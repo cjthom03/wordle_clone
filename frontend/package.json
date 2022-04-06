@@ -9,6 +9,8 @@
     "develop": "webpack-dev-server --mode=development"
   },
   "dependencies": {
+    "@mui/material": "^5.5.3",
+    "@mui/styled-engine-sc": "^5.5.2",
     "express": "^4.17.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
