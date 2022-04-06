@@ -8,16 +8,16 @@ interface KeyProps {
 }
 
 interface ButtonProps extends MuiButtonProps {
-  flexSize: number
+  flexsize: number
 }
 
-const Button = styled(MuiButton)<ButtonProps>(({ flexSize, theme }) => ({
+const Button = styled(MuiButton)<ButtonProps>(({ flexsize, theme }) => ({
   height: '3.625rem',
   marginRight: 6,
   padding: 0,
   backgroundColor: theme.palette.fill.lightGrey,
   minWidth: 0,
-  flex: flexSize,
+  flex: flexsize,
   '&:last-of-type': {
     margin: 0,
   }
@@ -26,6 +26,6 @@ const Button = styled(MuiButton)<ButtonProps>(({ flexSize, theme }) => ({
 
 export const Key = ({ dataKey, size = 1  }: KeyProps) => {
   return (
-    <Button flexSize={size}>{dataKey}</Button>
+    <Button flexsize={size}>{dataKey}</Button>
   )
 }
