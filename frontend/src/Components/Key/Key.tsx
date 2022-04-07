@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ButtonBase as MuiButton, ButtonBaseProps as MuiButtonProps } from '@mui/material';
-import { Theme } from '@mui/material/styles';
+
+import { StyleHelpers } from '../../Helpers'
 
 interface KeyProps {
   dataKey: string;
@@ -14,30 +15,6 @@ interface ButtonProps extends MuiButtonProps {
   dataState?: string;
 }
 
-const stateBasedSytles = (dataState: string | undefined, theme: Theme) => {
-  switch(dataState) {
-    case 'absent':
-      return {
-        backgroundColor: theme.palette.fill.darkGrey,
-        color: theme.palette.fill.contrastText,
-      }
-    case 'correct':
-      return {
-        backgroundColor: theme.palette.fill.green,
-        color: theme.palette.fill.contrastText,
-      }
-    case 'present':
-      return {
-        backgroundColor: theme.palette.fill.yellow,
-        color: theme.palette.fill.contrastText,
-      }
-    default: {
-      return {
-        color: theme.palette.text.primary,
-      }
-    }
-  }
-}
 
 const Button = styled(MuiButton)<ButtonProps>(({ flexsize, theme, dataState }) => ({
   height: '3.625rem',
@@ -53,7 +30,7 @@ const Button = styled(MuiButton)<ButtonProps>(({ flexsize, theme, dataState }) =
     margin: 0,
   },
   backgroundColor: theme.palette.fill.lightGrey,
-    ...stateBasedSytles(dataState, theme),
+    ...StyleHelpers.stateBasedSytles(dataState, theme),
 }))
 
 
