@@ -1,16 +1,15 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ButtonBase as MuiButton, ButtonBaseProps as MuiButtonProps } from '@mui/material';
+import { Action } from 'redux';
 
 import { StyleHelpers } from '../../Helpers';
 import { DataStates } from '../../Types';
 import { useAppDispatch } from '../../hooks';
-import { addLetter, nextRow } from '../../Reducers/rowReducer';
+import { addLetter, removeLetter, nextRow } from '../../Reducers/rowReducer';
 
 interface KeyProps {
-  dataKey: string;
-  size?: number;
-  datastate?: DataStates;
+  dataKey: string
 }
 
 interface ButtonProps extends MuiButtonProps {
@@ -18,6 +17,11 @@ interface ButtonProps extends MuiButtonProps {
   datastate?: DataStates;
 }
 
+interface BaseKeyProps extends KeyProps {
+  flexsize: number;
+  datastate?: DataStates;
+  clickAction: Action;
+}
 
 const Button = styled(MuiButton)<ButtonProps>(({ flexsize, theme, datastate }) => ({
   height: '3.625rem',
@@ -37,15 +41,14 @@ const Button = styled(MuiButton)<ButtonProps>(({ flexsize, theme, datastate }) =
   ...StyleHelpers.stateBasedFontColors({datastate, theme}),
 }))
 
-
-export const Key = ({ dataKey, datastate, size = 1  }: KeyProps) => {
+const KeyBase = ({ dataKey, flexsize, datastate, clickAction }: BaseKeyProps) => {
   const dipatch = useAppDispatch();
 
   return (
     <Button
-      flexsize={size}
+      flexsize={flexsize}
       datastate={datastate}
-      onClick={() => dipatch(addLetter(dataKey))}
+      onClick={() => dipatch(clickAction)}
       disableRipple
       disableTouchRipple>
       {dataKey}
@@ -53,16 +56,14 @@ export const Key = ({ dataKey, datastate, size = 1  }: KeyProps) => {
   )
 }
 
-Key.Enter = () => {
-  const dipatch = useAppDispatch();
+export const Key = ({ dataKey }: KeyProps) => {
+  const datastate = undefined;
 
   return (
-    <Button
-      flexsize={1.5}
-      onClick={() => dipatch(nextRow())}
-      disableRipple
-      disableTouchRipple>
-      enter
-    </Button>
+    <KeyBase flexsize={1} dataKey={dataKey} datastate={datastate} clickAction={addLetter(dataKey)} />
   )
 }
+
+Key.Enter = () => <KeyBase flexsize={1.5} dataKey={'enter'} clickAction={nextRow()} />
+Key.Backspace = () => <KeyBase flexsize={1.5} dataKey={'(back)'} clickAction={removeLetter()} />
+

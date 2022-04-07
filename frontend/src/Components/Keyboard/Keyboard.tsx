@@ -27,7 +27,7 @@ export const Keyboard = () => {
       <KeyboardRow>
         <Key.Enter />
         {'zxcvbnm'.split('').map((key, i) => <Key dataKey={key} key={i} />) }
-        <Key dataKey='(back)' size={1.5} />
+        <Key.Backspace />
       </KeyboardRow>
     </Container>
   )
