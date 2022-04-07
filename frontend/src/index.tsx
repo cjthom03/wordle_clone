@@ -1,25 +1,22 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider  } from '@mui/system';
+import { ThemeProvider  } from './Themes/ThemeProvider';
+import { Provider } from 'react-redux';
 
-import { getTheme } from './Themes/themes';
-import { GlobalStyles } from './Fonts/fonts';
+import { store } from './store';
 import App from './App';
 
 const appRoutes = (
-  <React.Fragment>
-    <GlobalStyles />
-    <CssBaseline />
-    <ThemeProvider theme={getTheme('light')}>
+  <Provider store={store}>
+    <ThemeProvider>
       <Router>
         <Routes>
           <Route path="/" element={<App />} />
         </Routes>
       </Router>
     </ThemeProvider>
-  </React.Fragment>
+  </Provider>
 );
 
 ReactDOM.render(appRoutes, document.getElementById('root'));

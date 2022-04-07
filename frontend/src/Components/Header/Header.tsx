@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Typography, Switch as MuiSwitch  } from '@mui/material';
+import { Typography } from '@mui/material';
+
+import { ThemeToggle } from '../Toggles/ThemeToggle';
 
 export const HEIGHT = 50;
 
@@ -23,27 +25,6 @@ const Title = styled(Typography).attrs(() => ({
   width: '60%',
 }))
 
-const ThemeToggle = styled.div(() => ({
-  width: '20%',
-  display: 'flex',
-  justifyContent: 'flex-end',
-  alignItems: 'center'
-}));
-
-const Label = styled(Typography)``;
-
-const Switch = styled(MuiSwitch)(({theme}) =>({
-  '& .MuiSwitch-switchBase': {
-    '&.Mui-checked': {
-      color: theme.palette.common.white,
-      '& + .MuiSwitch-track': {
-        backgroundColor: theme.palette.fill.green,
-        opacity: 1,
-      }
-    }
-  }
-}));
-
 const PlaceHolder = styled.div(() => ({
   width: '20%',
 }));
@@ -53,10 +34,7 @@ export const Header = () => {
     <Wrapper>
       <PlaceHolder />
       <Title>Wordle</Title>
-      <ThemeToggle>
-        <Label variant='body2'>Dark Mode</Label>
-        <Switch disableRipple />
-      </ThemeToggle>
+      <ThemeToggle />
     </Wrapper>
   )
 };
