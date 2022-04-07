@@ -25,7 +25,7 @@ export const Keyboard = () => {
         <Spacer />
       </KeyboardRow>
       <KeyboardRow>
-        <Key dataKey='enter' size={1.5} />
+        <Key.Enter />
         {'zxcvbnm'.split('').map((key, i) => <Key dataKey={key} key={i} />) }
         <Key dataKey='(back)' size={1.5} />
       </KeyboardRow>

@@ -26,7 +26,7 @@ export const Board = () => {
     <BoardWrapper>
       <BoardRows>
         {[...Array(RowCount)].map((_, i) => {
-          return <BoardRow key={i} />
+          return <BoardRow key={i} row={i}/>
         })}
       </BoardRows>
     </BoardWrapper>

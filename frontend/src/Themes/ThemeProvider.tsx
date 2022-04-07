@@ -1,9 +1,8 @@
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider as MuiThemeProvider   } from '@mui/system';
-import { useSelector  } from 'react-redux';
 
-import { RootState } from '../store';
+import { useAppSelector  } from '../hooks';
 import { GlobalStyles  } from '../Fonts/fonts';
 import { getTheme  } from './themes';
 
@@ -12,7 +11,7 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({children}: ThemeProviderProps) =>{
-  const theme = useSelector((state: RootState) => state.theme.mode)
+  const theme = useAppSelector((state) => state.theme.mode)
 
   return (
     <React.Fragment>

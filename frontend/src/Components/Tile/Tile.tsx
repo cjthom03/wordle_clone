@@ -3,20 +3,26 @@ import styled from 'styled-components';
 import { Typography } from '@mui/material'
 
 import { DataStates } from '../../Types';
-import { StyleHelpers } from '../../Helpers'
+import { StyleHelpers } from '../../Helpers';
+import { useAppSelector } from '../../hooks';
 
 interface ContainerProps {
-  dataState?: DataStates;
+  datastate?: DataStates;
 }
 
-const Container = styled.div<ContainerProps>(({ theme, dataState }) => ({
+interface TileProps {
+  row: number,
+  tile: number
+}
+
+const Container = styled.div<ContainerProps>(({ theme, datastate }) => ({
   width: "100%",
   height: '100%',
   display: 'flex',
   alignItems: 'center',
-  ...StyleHelpers.stateBasedBackgrounds({dataState, theme}),
-  ...StyleHelpers.stateBasedBorders({dataState, theme}),
-  ...StyleHelpers.stateBasedFontColors({dataState, theme}),
+  ...StyleHelpers.stateBasedBackgrounds({datastate, theme}),
+  ...StyleHelpers.stateBasedBorders({datastate, theme}),
+  ...StyleHelpers.stateBasedFontColors({datastate, theme}),
 }))
 
 const Letter = styled(Typography)(({theme}) => ({
@@ -30,10 +36,12 @@ const Letter = styled(Typography)(({theme}) => ({
   }
 }))
 
-export const Tile = () => {
+export const Tile = ({row, tile}: TileProps) => {
+  const { datastate, letter } = useAppSelector((state) => state.rows[row][tile])
+
   return (
-    <Container dataState={undefined}>
-      <Letter></Letter>
+    <Container datastate={datastate}>
+      <Letter>{letter}</Letter>
     </Container>
   )
 }

@@ -3,6 +3,10 @@ import styled from 'styled-components';
 
 import { Tile } from '../../Components/Tile/Tile';
 
+interface BoardRowProps {
+  row: number
+}
+
 export const TileCount = 5;
 
 const Row = styled.div(() => ({
@@ -11,11 +15,11 @@ const Row = styled.div(() => ({
   gridGap: 5,
 }))
 
-export const BoardRow = () => {
+export const BoardRow = ({ row }: BoardRowProps) => {
   return (
     <Row>
       {[...Array(TileCount)].map((_, i) => {
-        return <Tile key={i} />
+        return <Tile key={i} tile={i} row={row}/>
       })}
     </Row>
   )

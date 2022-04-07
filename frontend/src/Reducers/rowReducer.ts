@@ -10,19 +10,10 @@ export interface RowState {
   [key: number]: {
     guess: string,
     [key: number]: {
-      dataState?: DataStates,
+      datastate?: DataStates,
       letter?: string,
     }
   }
-}
-
-export interface RowPayload {
-  row: number,
-  tile: number,
-}
-
-export interface AddLetterPayload extends RowPayload {
-  letter: string,
 }
 
 const initialRowState = (): RowState => {
@@ -36,7 +27,7 @@ const initialRowState = (): RowState => {
     tiles.forEach((_, j: number) => {
       state[i][j] = {
         letter: undefined,
-        dataState: undefined,
+        datastate: undefined,
       }
     })
   })
@@ -48,24 +39,29 @@ export const rowSlice = createSlice({
   name: 'rows',
   initialState: initialRowState(),
   reducers: {
-    addLetter: (state, action: PayloadAction<AddLetterPayload>) => {
-      const { row, tile, letter } = action.payload;
+    addLetter: (state, action: PayloadAction<string>) => {
+      const letter = action.payload;
+      const row = state.currentRow;
+      const tile = state[row].guess.length;
 
-      if(row !== state.currentRow || state[row].guess.length === TileCount) return;
+      if(state[row].guess.length === TileCount) return;
 
       state[row].guess = state[row].guess + letter[0]
-      state[row][tile] = { letter, dataState: DataStates.TBD }
+      state[row][tile] = { letter, datastate: DataStates.TBD }
     },
-    removeLetter: (state, action: PayloadAction<RowPayload>) => {
-      const { row, tile } = action.payload;
+    removeLetter: (state) => {
+      const row = state.currentRow;
+      const tile = state[row].guess.length - 1;
 
-      if(row !== state.currentRow || !state[row].guess.length) return;
+      if(!state[row].guess.length) return;
 
       state[row].guess = state[row].guess.slice(0, -1)
-      state[row][tile] = { letter: undefined, dataState: undefined }
+      state[row][tile] = { letter: undefined, datastate: undefined }
     },
     nextRow: (state) => {
-      if(state.currentRow < RowCount - 1) state.currentRow += 1
+      if(state.currentRow < RowCount - 1 && state[state.currentRow].guess.length === TileCount) {
+        state.currentRow += 1
+      }
     }
   }
 })

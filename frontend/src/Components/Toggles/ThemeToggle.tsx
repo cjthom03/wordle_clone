@@ -1,9 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Typography, Switch as MuiSwitch   } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from '../../store';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { changeMode } from '../../Reducers/themeReducer';
 
 const Toggle = styled.div(() => ({
@@ -36,8 +35,8 @@ const newMode = (event: React.ChangeEvent<HTMLInputElement>) => {
 
 
 export const ThemeToggle = () => {
-  const mode = useSelector((state: RootState) => state.theme.mode)
-  const dispatch = useDispatch();
+  const mode = useAppSelector((state) => state.theme.mode)
+  const dispatch = useAppDispatch();
 
   const toggleTheme = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeMode(newMode(event)))

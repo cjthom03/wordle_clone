@@ -3,12 +3,12 @@ import { Theme } from '@mui/material/styles';
 import { DataStates } from '../Types';
 
 interface StateBasedStyleProps {
-  dataState?: DataStates;
+  datastate?: DataStates;
   theme: Theme;
 }
 
-export const stateBasedBackgrounds = ({dataState, theme}:StateBasedStyleProps) => {
-  switch(dataState) {
+export const stateBasedBackgrounds = ({datastate, theme}:StateBasedStyleProps) => {
+  switch(datastate) {
     case DataStates.ABSENT:
       return { backgroundColor: theme.palette.fill.darkGrey }
     case DataStates.CORRECT:
@@ -22,8 +22,8 @@ export const stateBasedBackgrounds = ({dataState, theme}:StateBasedStyleProps) =
   }
 }
 
-export const stateBasedBorders= ({dataState, theme}:StateBasedStyleProps) => {
-  switch(dataState) {
+export const stateBasedBorders= ({datastate, theme}:StateBasedStyleProps) => {
+  switch(datastate) {
     case DataStates.CORRECT:
     case DataStates.PRESENT:
     case DataStates.ABSENT:
@@ -36,8 +36,8 @@ export const stateBasedBorders= ({dataState, theme}:StateBasedStyleProps) => {
   }
 }
 
-export const stateBasedFontColors = ({dataState, theme}:StateBasedStyleProps) => {
-  switch(dataState) {
+export const stateBasedFontColors = ({datastate, theme}:StateBasedStyleProps) => {
+  switch(datastate) {
     case DataStates.ABSENT:
     case DataStates.CORRECT:
     case DataStates.PRESENT:
