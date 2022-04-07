@@ -7,28 +7,17 @@ interface StateBasedStyleProps {
   theme: Theme;
 }
 
-export const stateBasedSytles = ({dataState, theme}:StateBasedStyleProps) => {
+export const stateBasedBackgrounds = ({dataState, theme}:StateBasedStyleProps) => {
   switch(dataState) {
     case DataStates.ABSENT:
-      return {
-        backgroundColor: theme.palette.fill.darkGrey,
-        color: theme.palette.fill.contrastText,
-      }
+      return { backgroundColor: theme.palette.fill.darkGrey }
     case DataStates.CORRECT:
-      return {
-        backgroundColor: theme.palette.fill.green,
-        color: theme.palette.fill.contrastText,
-      }
+      return { backgroundColor: theme.palette.fill.green }
     case DataStates.PRESENT:
-      return {
-        backgroundColor: theme.palette.fill.yellow,
-        color: theme.palette.fill.contrastText,
-      }
+      return { backgroundColor: theme.palette.fill.yellow }
     case DataStates.TBD:
     default: {
-      return {
-        color: theme.palette.text.primary,
-      }
+      return { }
     }
   }
 }
@@ -43,6 +32,21 @@ export const stateBasedBorders= ({dataState, theme}:StateBasedStyleProps) => {
       return { border: `2px solid ${theme.palette.border.greyActive}` }
     default: {
       return { border: `2px solid ${theme.palette.border.grey}` }
+    }
+  }
+}
+
+export const stateBasedFontColors = ({dataState, theme}:StateBasedStyleProps) => {
+  switch(dataState) {
+    case DataStates.ABSENT:
+    case DataStates.CORRECT:
+    case DataStates.PRESENT:
+      return { color: theme.palette.common.white }
+    case DataStates.TBD:
+    default: {
+      return {
+        color: theme.palette.text.primary,
+      }
     }
   }
 }

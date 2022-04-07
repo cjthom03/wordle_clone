@@ -31,7 +31,8 @@ const Button = styled(MuiButton)<ButtonProps>(({ flexsize, theme, dataState }) =
     margin: 0,
   },
   backgroundColor: theme.palette.fill.lightGrey,
-  ...StyleHelpers.stateBasedSytles({dataState, theme}),
+  ...StyleHelpers.stateBasedBackgrounds({dataState, theme}),
+  ...StyleHelpers.stateBasedFontColors({dataState, theme}),
 }))
 
 
