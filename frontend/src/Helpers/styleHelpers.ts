@@ -1,22 +1,30 @@
-import { Theme  } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
 
-export const stateBasedSytles = (dataState: string | undefined, theme: Theme) => {
+import { DataStates } from '../Types';
+
+interface StateBasedStyleProps {
+  dataState?: DataStates;
+  theme: Theme;
+}
+
+export const stateBasedSytles = ({dataState, theme}:StateBasedStyleProps) => {
   switch(dataState) {
-          case 'absent':
+    case DataStates.ABSENT:
       return {
         backgroundColor: theme.palette.fill.darkGrey,
         color: theme.palette.fill.contrastText,
       }
-          case 'correct':
+    case DataStates.CORRECT:
       return {
         backgroundColor: theme.palette.fill.green,
         color: theme.palette.fill.contrastText,
       }
-          case 'present':
+    case DataStates.PRESENT:
       return {
         backgroundColor: theme.palette.fill.yellow,
         color: theme.palette.fill.contrastText,
       }
+    case DataStates.TBD:
     default: {
       return {
         color: theme.palette.text.primary,
@@ -25,4 +33,17 @@ export const stateBasedSytles = (dataState: string | undefined, theme: Theme) =>
   }
 }
 
+export const stateBasedBorders= ({dataState, theme}:StateBasedStyleProps) => {
+  switch(dataState) {
+    case DataStates.CORRECT:
+    case DataStates.PRESENT:
+    case DataStates.ABSENT:
+      return { border: 'none' }
+    case DataStates.TBD:
+      return { border: `2px solid ${theme.palette.border.greyActive}` }
+    default: {
+      return { border: `2px solid ${theme.palette.border.grey}` }
+    }
+  }
+}
 

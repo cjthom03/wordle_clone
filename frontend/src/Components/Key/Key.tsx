@@ -2,17 +2,18 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { ButtonBase as MuiButton, ButtonBaseProps as MuiButtonProps } from '@mui/material';
 
-import { StyleHelpers } from '../../Helpers'
+import { StyleHelpers } from '../../Helpers';
+import { DataStates } from '../../Types';
 
 interface KeyProps {
   dataKey: string;
   size?: number;
-  dataState?: string;
+  dataState?: DataStates;
 }
 
 interface ButtonProps extends MuiButtonProps {
   flexsize: number;
-  dataState?: string;
+  dataState?: DataStates;
 }
 
 
@@ -30,7 +31,7 @@ const Button = styled(MuiButton)<ButtonProps>(({ flexsize, theme, dataState }) =
     margin: 0,
   },
   backgroundColor: theme.palette.fill.lightGrey,
-    ...StyleHelpers.stateBasedSytles(dataState, theme),
+  ...StyleHelpers.stateBasedSytles({dataState, theme}),
 }))
 
 

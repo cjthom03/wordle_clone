@@ -12,6 +12,7 @@ const darkTheme = createTheme({
     mode: 'dark',
     border: {
       grey: '#3a3a3c',
+      greyActive: '#565758',
     },
     fill: {
       lightGrey: '#818384',
@@ -29,6 +30,7 @@ const lightTheme = createTheme({
     mode: 'light',
     border: {
       grey: '#d3d6da',
+      greyActive: '#878a8c',
     },
     fill: {
       lightGrey: '#d3d6da',
