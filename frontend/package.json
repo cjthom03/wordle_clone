@@ -1,7 +1,7 @@
 {
   "name": "wordle_clone_react",
   "version": "1.0.0",
-  "main": "index.jsx",
+  "main": "index.tsx",
   "author": "Charles Thomas",
   "license": "MIT",
   "scripts": {
