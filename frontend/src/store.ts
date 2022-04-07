@@ -1,9 +1,11 @@
 import { configureStore  } from '@reduxjs/toolkit';
 import { themeReducer } from './Reducers/themeReducer';
+import { rowReducer } from './Reducers/rowReducer';
 
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
+    rows: rowReducer,
   },
 })
 

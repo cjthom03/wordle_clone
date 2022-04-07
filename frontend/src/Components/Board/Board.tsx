@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { BoardRow, TileCount } from '../../Components/BoardRow/BoardRow';
 
-const RowCount = 6;
+export const RowCount = 6;
 
 const BoardWrapper = styled.div(() =>({
   display: 'flex',
