@@ -48,7 +48,10 @@ const KeyBase = ({ dataKey, flexsize, datastate, clickAction }: BaseKeyProps) =>
     <Button
       flexsize={flexsize}
       datastate={datastate}
-      onClick={() => dipatch(clickAction)}
+      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+        dipatch(clickAction)
+        event.currentTarget.blur()
+      }}
       disableRipple
       disableTouchRipple>
       {dataKey}
