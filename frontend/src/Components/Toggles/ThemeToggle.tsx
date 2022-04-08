@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { changeMode } from '../../Reducers/themeReducer';
 
 const Toggle = styled.div(() => ({
-    width: '20%',
+    width: '35%',
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center'

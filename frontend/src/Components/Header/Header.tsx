@@ -22,11 +22,11 @@ const Title = styled(Typography).attrs(() => ({
   color: theme.palette.text.primary,
   fontSize: '2.3125rem',
   fontFamily: 'KarnakProCondensed',
-  width: '60%',
+  width: '30%',
 }))
 
 const PlaceHolder = styled.div(() => ({
-  width: '20%',
+  width: '35%',
 }));
 
 export const Header = () => {
