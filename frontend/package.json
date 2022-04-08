@@ -9,6 +9,7 @@
     "develop": "webpack-dev-server --mode=development"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.6.0",
     "@mui/material": "^5.5.3",
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
     "@reduxjs/toolkit": "^1.8.1",
