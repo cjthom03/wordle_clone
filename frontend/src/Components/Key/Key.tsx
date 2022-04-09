@@ -44,14 +44,14 @@ const Button = styled(MuiButton)<ButtonProps>(({ flexsize, theme, datastate }) =
 }))
 
 const KeyBase = ({ dataKey, flexsize, datastate, clickAction, children }: BaseKeyProps) => {
-  const dipatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <Button
       flexsize={flexsize}
       datastate={datastate}
       onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-        dipatch(clickAction)
+        dispatch(clickAction)
         event.currentTarget.blur()
       }}
       disableRipple

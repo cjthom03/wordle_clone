@@ -1,11 +1,13 @@
 import { configureStore  } from '@reduxjs/toolkit';
 import { themeReducer } from './Reducers/themeReducer';
 import { rowReducer } from './Reducers/rowReducer';
+import { toastReducer } from './Reducers/toastReducer';
 
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
     rows: rowReducer,
+    toast: toastReducer,
   },
 })
 

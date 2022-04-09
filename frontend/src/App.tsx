@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { Header } from './Components/Header/Header';
 import { Game } from './Components/Game/Game';
+import { Toast } from './Components/Toast/Toast';
 
 const Main = styled('div')(({ theme }) => ({
   width: '100vw',
@@ -13,6 +14,7 @@ const Main = styled('div')(({ theme }) => ({
 const App = () => {
   return (
     <Main>
+      <Toast />
       <Header />
       <Game />
     </Main>

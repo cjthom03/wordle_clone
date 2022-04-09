@@ -3,6 +3,23 @@ import { createTheme } from '@mui/material/styles';
 import { ThemeModes } from '../Types';
 
 const sharedThemeAttributes = {
+  components: {
+    MuiSnackbar: {
+      styleOverrides: {
+        anchorOriginTopCenter: {
+          minWidth: '100px',
+          top: '13%',
+          '@media (min-width: 0px)': {
+            top: '13%',
+            minWidth: '100px',
+            left: '50%',
+            right: 'auto',
+            transform: 'translateX(-50%)',
+          }
+        }
+      }
+    }
+  },
   typography: {
     fontFamily: "Helvetica Neue, Arial, sans-serif",
   },
