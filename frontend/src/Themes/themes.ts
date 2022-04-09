@@ -1,5 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 
+import { ThemeModes } from '../Types';
+
 const sharedThemeAttributes = {
   typography: {
     fontFamily: "Helvetica Neue, Arial, sans-serif",
@@ -9,7 +11,7 @@ const sharedThemeAttributes = {
 const darkTheme = createTheme({
   ...sharedThemeAttributes,
   palette: {
-    mode: 'dark',
+    mode: ThemeModes.DARK,
     border: {
       grey: '#3a3a3c',
       greyActive: '#565758',
@@ -27,7 +29,7 @@ const darkTheme = createTheme({
 const lightTheme = createTheme({
   ...sharedThemeAttributes,
   palette: {
-    mode: 'light',
+    mode: ThemeModes.LIGHT,
     border: {
       grey: '#d3d6da',
       greyActive: '#878a8c',
@@ -42,5 +44,5 @@ const lightTheme = createTheme({
   }
 })
 
-export const getTheme = (mode: string) => mode === 'dark' ? darkTheme : lightTheme;
+export const getTheme = (mode: string) => mode === ThemeModes.DARK ? darkTheme : lightTheme;
 

@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Typography, Switch as MuiSwitch   } from '@mui/material';
 
+import { ThemeModes } from '../../Types';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { changeMode } from '../../Reducers/themeReducer';
 
@@ -30,7 +31,7 @@ const Switch = styled(MuiSwitch)(({theme}) =>({
 
 
 const newMode = (event: React.ChangeEvent<HTMLInputElement>) => {
-  return event.target.checked? 'dark' : 'light'
+  return event.target.checked ? ThemeModes.DARK : ThemeModes.LIGHT;
 }
 
 
