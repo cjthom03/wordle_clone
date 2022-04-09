@@ -1,6 +1,7 @@
 import { Theme } from '@mui/material/styles';
+import { keyframes, css } from 'styled-components';
 
-import { DataStates } from '../Types';
+import { DataStates, TileAnimations } from '../Types';
 
 interface StateBasedStyleProps {
   datastate?: DataStates;
@@ -48,6 +49,25 @@ export const stateBasedFontColors = ({datastate, theme}:StateBasedStyleProps) =>
         color: theme.palette.text.primary,
       }
     }
+  }
+}
+
+const PopIn = keyframes`
+  from { transform: scale(0.8); opacity: 0; }
+  40% { transform: scale(1.1); opacity: 1; }
+`
+
+const PopInAnimation = css`
+  animation-name: ${PopIn};
+  animation-duration: 100ms;
+`
+
+export const tileAnimation = (animation?: TileAnimations ) => {
+  switch(animation) {
+    case TileAnimations.POP:
+      return PopInAnimation
+    default:
+      return ''
   }
 }
 

@@ -2,12 +2,13 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Typography } from '@mui/material'
 
-import { DataStates } from '../../Types';
+import { DataStates, TileAnimations } from '../../Types';
 import { StyleHelpers } from '../../Helpers';
 import { useAppSelector } from '../../hooks';
 
 interface ContainerProps {
   datastate?: DataStates;
+  animation?: TileAnimations;
 }
 
 interface TileProps {
@@ -15,7 +16,11 @@ interface TileProps {
   tile: number
 }
 
-const Container = styled.div<ContainerProps>(({ theme, datastate }) => ({
+const AnimatedContainer = styled.div<ContainerProps>`
+  ${props => StyleHelpers.tileAnimation(props.animation)}
+`
+
+const Container = styled(AnimatedContainer)(({ theme, datastate }) => ({
   width: "100%",
   height: '100%',
   display: 'flex',
@@ -37,10 +42,10 @@ const Letter = styled(Typography)(({theme}) => ({
 }))
 
 export const Tile = ({row, tile}: TileProps) => {
-  const { datastate, letter } = useAppSelector((state) => state.rows[row][tile])
+  const { datastate, letter, animation } = useAppSelector((state) => state.rows[row][tile])
 
   return (
-    <Container datastate={datastate}>
+    <Container datastate={datastate} animation={animation}>
       <Letter>{letter}</Letter>
     </Container>
   )
