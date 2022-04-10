@@ -1,7 +1,7 @@
 import { Theme } from '@mui/material/styles';
 import { keyframes, css } from 'styled-components';
 
-import { DataStates, TileAnimations } from '../Types';
+import { DataStates, TileAnimations, RowAnimations } from '../Types';
 
 interface StateBasedStyleProps {
   datastate?: DataStates;
@@ -66,6 +66,27 @@ export const tileAnimation = (animation?: TileAnimations ) => {
   switch(animation) {
     case TileAnimations.POP:
       return PopInAnimation
+    default:
+      return ''
+  }
+}
+
+const Shake = keyframes`
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%,60% { transform: translateX(4px); }
+`
+
+const ShakeAnimation = css`
+  animation-name: ${Shake};
+  animation-duration: 600ms;
+`
+
+export const rowAnimation = (animation?: RowAnimations) => {
+  switch(animation) {
+    case RowAnimations.SHAKE:
+      return ShakeAnimation
     default:
       return ''
   }

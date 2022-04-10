@@ -41,11 +41,15 @@ const Letter = styled(Typography)(({theme}) => ({
   }
 }))
 
+const onAnimationEnd = (event: React.SyntheticEvent) => {
+  event.stopPropagation();
+}
+
 export const Tile = ({row, tile}: TileProps) => {
   const { datastate, letter, animation } = useAppSelector((state) => state.rows[row][tile])
 
   return (
-    <Container datastate={datastate} animation={animation}>
+    <Container datastate={datastate} animation={animation} onAnimationEnd={onAnimationEnd}>
       <Letter>{letter}</Letter>
     </Container>
   )

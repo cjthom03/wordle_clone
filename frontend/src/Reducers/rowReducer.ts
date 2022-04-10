@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 import { RootState } from '../store';
-import { DataStates, RowStates, TileAnimations } from '../Types';
+import { DataStates, RowStates, TileAnimations, RowAnimations } from '../Types';
 import { RowCount } from '../Components/Board/Board';
 import { TileCount } from '../Components/BoardRow/BoardRow';
 import { openToast } from '../Reducers/toastReducer';
@@ -11,6 +11,7 @@ export interface RowState {
   rowState: RowStates,
   [key: number]: {
     guess: string,
+    animation: RowAnimations,
     [key: number]: {
       datastate?: DataStates,
       letter?: string,
@@ -25,7 +26,7 @@ const initialRowState = (): RowState => {
   const rows = [...Array(RowCount)];
 
   rows.forEach((_, i: number) => {
-    state[i] = { guess: '' }
+    state[i] = { guess: '', animation: RowAnimations.IDLE }
 
     tiles.forEach((_, j: number) => {
       state[i][j] = {
@@ -46,6 +47,7 @@ export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
 
     if(state.rows[state.rows.currentRow].guess.length !== TileCount) {
       thunkApi.dispatch(openToast('Not enough letters'))
+      thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
     } else if(state.rows.currentRow < RowCount - 1) {
       thunkApi.dispatch(nextRow())
     }
@@ -89,6 +91,12 @@ export const rowSlice = createSlice({
     },
     nextRow: (state) => {
       state.currentRow += 1
+    },
+    startAnimation: (state, action: PayloadAction<RowAnimations>) => {
+      state[state.currentRow].animation = action.payload
+    },
+    endAnimation: (state, action: PayloadAction<number>) => {
+      state[action.payload].animation = RowAnimations.IDLE
     }
   },
   extraReducers: (builder) => {
@@ -97,6 +105,6 @@ export const rowSlice = createSlice({
   }
 })
 
-export const { addLetter, removeLetter, nextRow } = rowSlice.actions;
+export const { addLetter, removeLetter, nextRow, startAnimation, endAnimation } = rowSlice.actions;
 
 export const rowReducer = rowSlice.reducer;
