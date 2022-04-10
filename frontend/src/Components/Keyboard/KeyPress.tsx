@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {useState, useCallback, useEffect } from 'react';
 
-import { useAppDispatch } from '../../hooks';
-import { addLetter, removeLetter, nextRow } from '../../Reducers/rowReducer';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { addLetter, removeLetter, checkRow } from '../../Reducers/rowReducer';
+import { RowStates } from '../../Types';
 
 const singleCharacter = new RegExp('^[a-zA-Z]{1}$');
 
 export const KeyPress = () => {
   const [key, setKey] = useState('')
+  const rowState = useAppSelector((state) => state.rows.rowState)
   const dispatch = useAppDispatch();
 
   const checkKeyPress = useCallback((event) => {
@@ -27,9 +29,10 @@ export const KeyPress = () => {
   }, [])
 
   useEffect(() => {
+    if(rowState !== RowStates.IDLE) return;
     if(key.match(singleCharacter)) dispatch(addLetter(key.toLowerCase()))
     if(key === 'Backspace') dispatch(removeLetter())
-    if(key === 'Enter') dispatch(nextRow())
+    if(key === 'Enter') dispatch(checkRow())
   }, [key])
 
 

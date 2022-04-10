@@ -4,3 +4,9 @@ export enum DataStates {
   PRESENT = 'present',
   TBD = 'tbd',
 }
+
+export enum RowStates {
+  IDLE = 'idle',
+  PROCESSING = 'processing'
+}
+
