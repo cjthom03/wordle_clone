@@ -20,7 +20,6 @@ export const toastSlice = createSlice({
     },
     closeToast: (state) => {
       state.open = initialToastState.open
-      state.message = initialToastState.message
     }
   }
 })

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Snackbar as MuiSnackbar } from '@mui/material';
+import { Snackbar as MuiSnackbar, Fade } from '@mui/material';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { closeToast } from '../../Reducers/toastReducer';
@@ -26,6 +26,8 @@ export const Toast = () => {
       open={open}
       onClose={() => dispatch(closeToast())}
       autoHideDuration={1000}
+      TransitionComponent={Fade}
+      transitionDuration={{ exit: 350 }}
       message={message}
     />
   )
