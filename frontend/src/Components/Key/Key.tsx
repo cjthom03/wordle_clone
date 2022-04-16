@@ -6,7 +6,7 @@ import { Action } from 'redux';
 
 import { StyleHelpers } from '../../Helpers';
 import { DataStates } from '../../Types';
-import { useAppDispatch } from '../../hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { addLetter, removeLetter, nextRow } from '../../Reducers/rowReducer';
 
 interface KeyProps {
@@ -62,7 +62,7 @@ const KeyBase = ({ dataKey, flexsize, datastate, clickAction, children }: BaseKe
 }
 
 export const Key = ({ dataKey }: KeyProps) => {
-  const datastate = undefined;
+  const datastate = useAppSelector((state) => state.letters[dataKey].datastate)
 
   return (
     <KeyBase
