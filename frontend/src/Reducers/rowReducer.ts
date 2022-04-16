@@ -5,6 +5,7 @@ import { DataStates, RowStates, TileAnimations, RowAnimations } from '../Types';
 import { RowCount } from '../Components/Board/Board';
 import { TileCount } from '../Components/BoardRow/BoardRow';
 import { openToast } from '../Reducers/toastReducer';
+import { updateLetters } from '../Reducers/letterReducer';
 import { WordHelpers } from '../Helpers';
 import { wordApi } from '../Services/words';
 
@@ -59,7 +60,10 @@ export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
       thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
     } else if(currentRow < RowCount - 1) {
       const result = await thunkApi.dispatch(wordApi.endpoints.testWord.initiate(guess))
-      console.log(result) // just to avoid typescript errors for now
+
+      //TODO: error handle instead of this!
+      const testResults = result.data || [];
+      if(testResults.length) thunkApi.dispatch(updateLetters([guess, testResults]))
 
       // now, get that data to update the tile colors and the keyboard colors
       thunkApi.dispatch(nextRow()) // to be moved

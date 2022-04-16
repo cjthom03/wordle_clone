@@ -1,0 +1,58 @@
+import { createSlice, PayloadAction  } from '@reduxjs/toolkit'
+
+import { DataStates } from '../Types';
+
+export interface LetterState {
+  letter: string,
+  datastate: DataStates
+}
+
+export interface LetterStates {
+  [key: string]: LetterState,
+}
+
+const datastateMap = [DataStates.ABSENT, DataStates.PRESENT, DataStates.CORRECT]
+
+const letterTestToDatastate = {
+  [DataStates.TBD]: -1,
+  [DataStates.ABSENT]: 0,
+  [DataStates.PRESENT]: 1,
+  [DataStates.CORRECT]: 2,
+}
+
+const defaultLetterState = {
+  datastate: DataStates.TBD,
+}
+
+const initialLetterState: LetterStates = (() => {
+  let letters: LetterStates = {};
+
+  'abcdefghijklmnopqrstuvwxyz'.split('').forEach((letter: string) => {
+    letters[letter] = { ...defaultLetterState, letter: letter };
+  })
+
+  return letters
+})()
+
+export const letterSlice = createSlice({
+  name: 'letter',
+  initialState: initialLetterState,
+  reducers: {
+    updateLetters: (state, action: PayloadAction<[string, number[]]>) => {
+      const [guess, testResults] = action.payload;
+
+      guess.split('').forEach((letter: string, i) => {
+        const currentState = state[letter].datastate;
+        const datastateIndex = testResults[i]
+
+       if(letterTestToDatastate[currentState] < datastateIndex) {
+          state[letter].datastate = datastateMap[datastateIndex] || DataStates.TBD;
+        }
+      })
+    },
+  }
+})
+
+export const { updateLetters } = letterSlice.actions
+
+export const letterReducer = letterSlice.reducer;

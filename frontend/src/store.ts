@@ -3,6 +3,7 @@ import { themeReducer } from './Reducers/themeReducer';
 import { rowReducer } from './Reducers/rowReducer';
 import { toastReducer } from './Reducers/toastReducer';
 import { wordsReducer } from './Reducers/wordsReducer';
+import { letterReducer } from './Reducers/letterReducer';
 import { wordApi } from './Services/words';
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     rows: rowReducer,
     toast: toastReducer,
     words: wordsReducer,
+    letters: letterReducer,
     [wordApi.reducerPath]: wordApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
