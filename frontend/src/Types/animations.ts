@@ -1,4 +1,5 @@
 export enum TileAnimations {
+  IDLE = 'idle',
   POP = 'pop'
 }
 

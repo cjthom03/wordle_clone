@@ -4,7 +4,8 @@ import { Typography } from '@mui/material'
 
 import { DataStates, TileAnimations } from '../../Types';
 import { StyleHelpers } from '../../Helpers';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { endTileAnimation } from '../../Reducers/rowReducer';
 
 interface ContainerProps {
   datastate?: DataStates;
@@ -41,12 +42,14 @@ const Letter = styled(Typography)(({theme}) => ({
   }
 }))
 
-const onAnimationEnd = (event: React.SyntheticEvent) => {
-  event.stopPropagation();
-}
-
 export const Tile = ({row, tile}: TileProps) => {
   const { datastate, letter, animation } = useAppSelector((state) => state.rows[row][tile])
+  const dispatch = useAppDispatch();
+
+  const onAnimationEnd = (event: React.SyntheticEvent) => {
+    event.stopPropagation();
+    dispatch(endTileAnimation([row, tile]))
+  }
 
   return (
     <Container datastate={datastate} animation={animation} onAnimationEnd={onAnimationEnd}>

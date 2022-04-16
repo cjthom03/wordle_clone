@@ -8,18 +8,26 @@ import { openToast } from '../Reducers/toastReducer';
 import { WordHelpers } from '../Helpers';
 import { wordApi } from '../Services/words';
 
+export interface TileState {
+  datastate?: DataStates,
+  letter?: string,
+  animation?: TileAnimations,
+}
+
 export interface RowState {
   currentRow: number,
   rowState: RowStates,
   [key: number]: {
     guess: string,
     animation: RowAnimations,
-    [key: number]: {
-      datastate?: DataStates,
-      letter?: string,
-      animation?: TileAnimations,
-    }
+    [key: number]: TileState,
   }
+}
+
+const iniialTileState: TileState = {
+  datastate: undefined,
+  letter: undefined,
+  animation: TileAnimations.IDLE,
 }
 
 const initialRowState = (): RowState => {
@@ -30,13 +38,7 @@ const initialRowState = (): RowState => {
   rows.forEach((_, i: number) => {
     state[i] = { guess: '', animation: RowAnimations.IDLE }
 
-    tiles.forEach((_, j: number) => {
-      state[i][j] = {
-        letter: undefined,
-        datastate: undefined,
-        animation: undefined,
-      }
-    })
+    tiles.forEach((_, j: number) => state[i][j] = iniialTileState)
   })
 
   return state;
@@ -94,11 +96,7 @@ export const rowSlice = createSlice({
       if(!state[row].guess.length) return;
 
       state[row].guess = state[row].guess.slice(0, -1)
-      state[row][tile] = {
-        letter: undefined,
-        datastate: undefined,
-        animation: undefined,
-      }
+      state[row][tile] = iniialTileState;
     },
     nextRow: (state) => {
       state.currentRow += 1
@@ -108,6 +106,10 @@ export const rowSlice = createSlice({
     },
     endAnimation: (state, action: PayloadAction<number>) => {
       state[action.payload].animation = RowAnimations.IDLE
+    },
+    endTileAnimation: (state, action: PayloadAction<number[]>) => {
+      const [row, tile] = action.payload;
+      state[row][tile].animation = TileAnimations.IDLE;
     }
   },
   extraReducers: (builder) => {
@@ -117,6 +119,6 @@ export const rowSlice = createSlice({
   }
 })
 
-export const { addLetter, removeLetter, nextRow, startAnimation, endAnimation } = rowSlice.actions;
+export const { addLetter, removeLetter, nextRow, startAnimation, endAnimation, endTileAnimation } = rowSlice.actions;
 
 export const rowReducer = rowSlice.reducer;
