@@ -1,17 +1,7 @@
 import { createApi, fetchBaseQuery  } from '@reduxjs/toolkit/query/react'
-import { REAL_WORDS } from '../dummyData';
+import { REAL_WORDS, CORRECT_WORD } from '../dummyData';
 
-//interface LetterTestResult {
-  //inWord: boolean,
-  //correctSpot: boolean,
-//}
-
-//interface WordTestResult {
-  //exists: boolean,
-  //guess: string
-  //results: LetterTestResult[]
-//}
-//
+type TWordTestResult = number[]
 
 export const wordApi = createApi({
   reducerPath: 'wordApi',
@@ -22,10 +12,22 @@ export const wordApi = createApi({
         return { data: REAL_WORDS }
       }
     }),
-    //testWord: build.query<WordTestResult, string>({
-      //queryFn:
-    //})
+    testWord: build.query<TWordTestResult , string>({
+      queryFn: async (word) => {
+        return { data: testWordResults(word) }
+      }
+    })
   })
 })
 
-export const { useGetWordsQuery } = wordApi;
+export const { useGetWordsQuery, useTestWordQuery } = wordApi;
+
+
+// Temp Functions until implemented in backend
+
+const testWordResults = (word: string): TWordTestResult => {
+  return word.split('').map((letter, i): number => {
+    if(!CORRECT_WORD.includes(letter)) return 0;
+    return CORRECT_WORD[i] === letter ? 2 : 1;
+  })
+}

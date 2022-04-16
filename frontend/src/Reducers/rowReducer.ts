@@ -6,6 +6,7 @@ import { RowCount } from '../Components/Board/Board';
 import { TileCount } from '../Components/BoardRow/BoardRow';
 import { openToast } from '../Reducers/toastReducer';
 import { WordHelpers } from '../Helpers';
+import { wordApi } from '../Services/words';
 
 export interface RowState {
   currentRow: number,
@@ -46,15 +47,20 @@ export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
   async (_arg, thunkApi) => {
     const state = thunkApi.getState();
     const currentRow = state.rows.currentRow;
+    const guess = state.rows[currentRow].guess
 
-    if(state.rows[currentRow].guess.length !== TileCount) {
+    if(guess.length !== TileCount) {
       thunkApi.dispatch(openToast('Not enough letters'))
       thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
-    } else if(!WordHelpers.wordExists(state.words.allWords, state.rows[currentRow].guess)) {
+    } else if(!WordHelpers.wordExists(state.words.allWords, guess)) {
       thunkApi.dispatch(openToast('Not in word list'))
       thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
     } else if(currentRow < RowCount - 1) {
-      thunkApi.dispatch(nextRow())
+      const result = await thunkApi.dispatch(wordApi.endpoints.testWord.initiate(guess))
+      console.log(result) // just to avoid typescript errors for now
+
+      // now, get that data to update the tile colors and the keyboard colors
+      thunkApi.dispatch(nextRow()) // to be moved
     }
   }
 )
@@ -106,7 +112,8 @@ export const rowSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(checkRow.pending, (state) => { state.rowState = RowStates.PROCESSING }),
-    builder.addCase(checkRow.fulfilled, (state) => { state.rowState = RowStates.IDLE })
+    builder.addCase(checkRow.fulfilled, (state) => { state.rowState = RowStates.IDLE }),
+    builder.addCase(checkRow.rejected, (state) => { state.rowState = RowStates.IDLE })
   }
 })
 
