@@ -5,6 +5,7 @@ import { DataStates, RowStates, TileAnimations, RowAnimations } from '../Types';
 import { RowCount } from '../Components/Board/Board';
 import { TileCount } from '../Components/BoardRow/BoardRow';
 import { openToast } from '../Reducers/toastReducer';
+import { WordHelpers } from '../Helpers';
 
 export interface RowState {
   currentRow: number,
@@ -44,11 +45,15 @@ export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
   'rows/checkRow',
   async (_arg, thunkApi) => {
     const state = thunkApi.getState();
+    const currentRow = state.rows.currentRow;
 
-    if(state.rows[state.rows.currentRow].guess.length !== TileCount) {
+    if(state.rows[currentRow].guess.length !== TileCount) {
       thunkApi.dispatch(openToast('Not enough letters'))
       thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
-    } else if(state.rows.currentRow < RowCount - 1) {
+    } else if(!WordHelpers.wordExists(state.words.allWords, state.rows[currentRow].guess)) {
+      thunkApi.dispatch(openToast('Not in word list'))
+      thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
+    } else if(currentRow < RowCount - 1) {
       thunkApi.dispatch(nextRow())
     }
   }
