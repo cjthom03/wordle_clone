@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 import { RootState } from '../store';
-import { DataStates, RowStates, TileAnimations, RowAnimations } from '../Types';
+import { DataStates, datastateMap, RowStates, TileAnimations, RowAnimations } from '../Types';
 import { RowCount } from '../Components/Board/Board';
 import { TileCount } from '../Components/BoardRow/BoardRow';
 import { openToast } from '../Reducers/toastReducer';
@@ -63,7 +63,10 @@ export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
 
       //TODO: error handle instead of this!
       const testResults = result.data || [];
-      if(testResults.length) thunkApi.dispatch(updateLetters([guess, testResults]))
+      if(testResults.length) {
+        thunkApi.dispatch(updateLetters([guess, testResults]))
+        thunkApi.dispatch(updateTiles(testResults))
+      }
 
       // now, get that data to update the tile colors and the keyboard colors
       thunkApi.dispatch(nextRow()) // to be moved
@@ -114,6 +117,16 @@ export const rowSlice = createSlice({
     endTileAnimation: (state, action: PayloadAction<number[]>) => {
       const [row, tile] = action.payload;
       state[row][tile].animation = TileAnimations.IDLE;
+    },
+    updateTiles: (state, action: PayloadAction<number[]>) => {
+      const testResults = action.payload;
+      const { currentRow } = state;
+      const { guess } = state[currentRow];
+
+      guess.split('').forEach((_letter: string, i) => {
+        const datastateIndex = testResults[i]
+        state[currentRow][i].datastate = datastateMap[datastateIndex];
+      })
     }
   },
   extraReducers: (builder) => {
@@ -123,6 +136,14 @@ export const rowSlice = createSlice({
   }
 })
 
-export const { addLetter, removeLetter, nextRow, startAnimation, endAnimation, endTileAnimation } = rowSlice.actions;
+export const {
+  addLetter,
+  removeLetter,
+  nextRow,
+  startAnimation,
+  endAnimation,
+  endTileAnimation,
+  updateTiles,
+} = rowSlice.actions;
 
 export const rowReducer = rowSlice.reducer;

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction  } from '@reduxjs/toolkit'
 
-import { DataStates } from '../Types';
+import { DataStates, datastateMap, letterTestToDatastate } from '../Types';
 
 export interface LetterState {
   letter: string,
@@ -9,15 +9,6 @@ export interface LetterState {
 
 export interface LetterStates {
   [key: string]: LetterState,
-}
-
-const datastateMap = [DataStates.ABSENT, DataStates.PRESENT, DataStates.CORRECT]
-
-const letterTestToDatastate = {
-  [DataStates.TBD]: -1,
-  [DataStates.ABSENT]: 0,
-  [DataStates.PRESENT]: 1,
-  [DataStates.CORRECT]: 2,
 }
 
 const defaultLetterState = {

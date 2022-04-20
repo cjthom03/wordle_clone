@@ -10,3 +10,12 @@ export enum RowStates {
   PROCESSING = 'processing'
 }
 
+export const datastateMap = [DataStates.ABSENT, DataStates.PRESENT, DataStates.CORRECT]
+
+export const letterTestToDatastate = {
+  [DataStates.TBD]: -1,
+  [DataStates.ABSENT]: 0,
+  [DataStates.PRESENT]: 1,
+  [DataStates.CORRECT]: 2,
+}
+
