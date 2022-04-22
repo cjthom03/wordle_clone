@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 import { RootState } from '../store';
-import { DataStates, datastateMap, RowStates, TileAnimations, RowAnimations } from '../Types';
+import { DataStates, datastateMap, RowStates, TileAnimations, RowAnimations, GameStatus } from '../Types';
 import { RowCount } from '../Components/Board/Board';
 import { TileCount } from '../Components/BoardRow/BoardRow';
 import { openToast } from '../Reducers/toastReducer';
 import { updateLetters } from '../Reducers/letterReducer';
 import { WordHelpers } from '../Helpers';
 import { wordApi } from '../Services/words';
+import { checkStatus } from '../Reducers/gameReducer';
 
 export interface TileState {
   datastate?: DataStates,
@@ -21,6 +22,7 @@ export interface RowState {
   rowState: RowStates,
   [key: number]: {
     guess: string,
+    testResults: number[],
     animation: RowAnimations,
     [key: number]: TileState,
   }
@@ -39,7 +41,7 @@ const initialRowState = (): RowState => {
   const rows = [...Array(RowCount)];
 
   rows.forEach((_, i: number) => {
-    state[i] = { guess: '', animation: RowAnimations.IDLE }
+    state[i] = { guess: '', animation: RowAnimations.IDLE, testResults: [] }
 
     tiles.forEach((_, j: number) => state[i][j] = iniialTileState)
   })
@@ -50,6 +52,8 @@ const initialRowState = (): RowState => {
 export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
   'rows/checkRow',
   async (_arg, thunkApi) => {
+    if(thunkApi.getState().game.status !== GameStatus.PLAYING) return;
+
     const state = thunkApi.getState();
     const currentRow = state.rows.currentRow;
     const guess = state.rows[currentRow].guess
@@ -57,10 +61,12 @@ export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
     if(guess.length !== TileCount) {
       thunkApi.dispatch(openToast('Not enough letters'))
       thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
+      return thunkApi.rejectWithValue('Too Soon')
     } else if(!WordHelpers.wordExists(state.words.allWords, guess)) {
       thunkApi.dispatch(openToast('Not in word list'))
       thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
-    } else if(currentRow < RowCount - 1) {
+      return thunkApi.rejectWithValue('Bad Word')
+    } else if(currentRow < RowCount) {
       const result = await thunkApi.dispatch(wordApi.endpoints.testWord.initiate(guess))
 
       //TODO: error handle instead of this!
@@ -69,9 +75,22 @@ export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
         thunkApi.dispatch(updateLetters([guess, testResults]))
         thunkApi.dispatch(setTestResults(testResults))
       }
+    }
+  }
+)
 
-      // now, get that data to update the tile colors and the keyboard colors
-      thunkApi.dispatch(nextRow()) // to be moved
+export const endTileAnimation = createAsyncThunk<void, number[], { state: RootState }>(
+  'rows/endTileAnimation',
+  (arg, thunkApi) => {
+    const [row, tile] = arg;
+
+    if(thunkApi.getState().rows[row][tile].animation === TileAnimations.FLIP_IN) {
+      thunkApi.dispatch(updateDataState(arg))
+    } else if(thunkApi.getState().rows[row][tile].animation === TileAnimations.FLIP_OUT && tile === TileCount - 1) {
+      thunkApi.dispatch(checkStatus(row));
+      thunkApi.dispatch(resetTileAnimation(arg))
+    } else {
+      thunkApi.dispatch(resetTileAnimation(arg))
     }
   }
 )
@@ -108,6 +127,9 @@ export const rowSlice = createSlice({
       state[row].guess = state[row].guess.slice(0, -1)
       state[row][tile] = iniialTileState;
     },
+    setRowState: (state, action: PayloadAction<RowStates>) => {
+      state.rowState = action.payload;
+    },
     nextRow: (state) => {
       state.currentRow += 1
     },
@@ -117,12 +139,14 @@ export const rowSlice = createSlice({
     endAnimation: (state, action: PayloadAction<number>) => {
       state[action.payload].animation = RowAnimations.IDLE
     },
-    endTileAnimation: (state, action: PayloadAction<number[]>) => {
+    resetTileAnimation: (state, action: PayloadAction<number[]>) => {
       const [row, tile] = action.payload;
       state[row][tile].animation = TileAnimations.IDLE;
     },
     setTestResults: (state, action: PayloadAction<number[]>) => {
       const { currentRow } = state;
+
+      state[currentRow].testResults = action.payload;
 
       action.payload.forEach((result, i) => {
         state[currentRow][i].testResult = result;
@@ -138,7 +162,7 @@ export const rowSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(checkRow.pending, (state) => { state.rowState = RowStates.PROCESSING }),
-    builder.addCase(checkRow.fulfilled, (state) => { state.rowState = RowStates.IDLE }),
+    builder.addCase(checkRow.fulfilled, (state) => { state.rowState = RowStates.PROCESSING }),
     builder.addCase(checkRow.rejected, (state) => { state.rowState = RowStates.IDLE })
   }
 })
@@ -146,10 +170,11 @@ export const rowSlice = createSlice({
 export const {
   addLetter,
   removeLetter,
+  setRowState,
   nextRow,
   startAnimation,
   endAnimation,
-  endTileAnimation,
+  resetTileAnimation,
   setTestResults,
   updateDataState,
 } = rowSlice.actions;

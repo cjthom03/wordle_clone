@@ -4,6 +4,7 @@ import { rowReducer } from './Reducers/rowReducer';
 import { toastReducer } from './Reducers/toastReducer';
 import { wordsReducer } from './Reducers/wordsReducer';
 import { letterReducer } from './Reducers/letterReducer';
+import { gameReducer } from './Reducers/gameReducer';
 import { wordApi } from './Services/words';
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
     toast: toastReducer,
     words: wordsReducer,
     letters: letterReducer,
+    game: gameReducer,
     [wordApi.reducerPath]: wordApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

@@ -7,7 +7,15 @@ export enum DataStates {
 
 export enum RowStates {
   IDLE = 'idle',
-  PROCESSING = 'processing'
+  PROCESSING = 'processing',
+  COMPLETE = 'complete'
+}
+
+
+export enum GameStatus {
+  PLAYING = 'playing',
+  LOST = 'lost',
+  WON = 'won'
 }
 
 export const datastateMap = [DataStates.ABSENT, DataStates.PRESENT, DataStates.CORRECT]
