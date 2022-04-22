@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { ButtonBase as MuiButton, ButtonBaseProps as MuiButtonProps } from '@mui/material';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import { Action } from 'redux';
+import { AsyncThunkAction } from '@reduxjs/toolkit';
 
 import { StyleHelpers } from '../../Helpers';
 import { DataStates } from '../../Types';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { addLetter, removeLetter, nextRow } from '../../Reducers/rowReducer';
+import { addLetter, removeLetter, checkRow} from '../../Reducers/rowReducer';
 
 interface KeyProps {
   dataKey: string;
@@ -22,7 +23,7 @@ interface BaseKeyProps extends KeyProps {
   flexsize: number;
   datastate?: DataStates;
   children?: React.ReactNode;
-  clickAction: Action;
+  clickAction: Action | AsyncThunkAction<any, any, any>;
 }
 
 const Button = styled(MuiButton)<ButtonProps>(({ flexsize, theme, datastate }) => ({
@@ -73,7 +74,7 @@ export const Key = ({ dataKey }: KeyProps) => {
   )
 }
 
-Key.Enter = () => <KeyBase flexsize={1.5} dataKey={'enter'} clickAction={nextRow()} />
+Key.Enter = () => <KeyBase flexsize={1.5} dataKey={'enter'} clickAction={checkRow()} />
 
 Key.Backspace = () => <KeyBase flexsize={1.5} dataKey={'backspace'} clickAction={removeLetter()}><BackspaceOutlinedIcon /></KeyBase>
 
