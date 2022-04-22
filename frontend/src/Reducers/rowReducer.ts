@@ -12,7 +12,8 @@ import { wordApi } from '../Services/words';
 export interface TileState {
   datastate?: DataStates,
   letter?: string,
-  animation?: TileAnimations,
+  animation: TileAnimations,
+  testResult: number,
 }
 
 export interface RowState {
@@ -29,6 +30,7 @@ const iniialTileState: TileState = {
   datastate: undefined,
   letter: undefined,
   animation: TileAnimations.IDLE,
+  testResult: -1,
 }
 
 const initialRowState = (): RowState => {
@@ -65,7 +67,7 @@ export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
       const testResults = result.data || [];
       if(testResults.length) {
         thunkApi.dispatch(updateLetters([guess, testResults]))
-        thunkApi.dispatch(updateTiles(testResults))
+        thunkApi.dispatch(setTestResults(testResults))
       }
 
       // now, get that data to update the tile colors and the keyboard colors
@@ -89,6 +91,7 @@ export const rowSlice = createSlice({
 
       state[row].guess = state[row].guess + letter[0]
       state[row][tile] = {
+        ...state[row][tile],
         letter,
         datastate: DataStates.TBD,
         animation: TileAnimations.POP,
@@ -118,15 +121,19 @@ export const rowSlice = createSlice({
       const [row, tile] = action.payload;
       state[row][tile].animation = TileAnimations.IDLE;
     },
-    updateTiles: (state, action: PayloadAction<number[]>) => {
-      const testResults = action.payload;
+    setTestResults: (state, action: PayloadAction<number[]>) => {
       const { currentRow } = state;
-      const { guess } = state[currentRow];
 
-      guess.split('').forEach((_letter: string, i) => {
-        const datastateIndex = testResults[i]
-        state[currentRow][i].datastate = datastateMap[datastateIndex];
+      action.payload.forEach((result, i) => {
+        state[currentRow][i].testResult = result;
+        state[currentRow][i].animation = TileAnimations.FLIP_IN;
       })
+    },
+    updateDataState: (state, action: PayloadAction<number[]>) => {
+      const [row, tile] = action.payload;
+      const datastateIndex = state[row][tile].testResult;
+      state[row][tile].datastate = datastateMap[datastateIndex];
+      state[row][tile].animation = TileAnimations.FLIP_OUT;
     }
   },
   extraReducers: (builder) => {
@@ -143,7 +150,8 @@ export const {
   startAnimation,
   endAnimation,
   endTileAnimation,
-  updateTiles,
+  setTestResults,
+  updateDataState,
 } = rowSlice.actions;
 
 export const rowReducer = rowSlice.reducer;

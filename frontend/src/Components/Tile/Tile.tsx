@@ -1,15 +1,16 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Typography } from '@mui/material'
 
 import { DataStates, TileAnimations } from '../../Types';
 import { StyleHelpers } from '../../Helpers';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { endTileAnimation } from '../../Reducers/rowReducer';
+import { endTileAnimation, updateDataState } from '../../Reducers/rowReducer';
 
 interface ContainerProps {
   datastate?: DataStates;
-  animation?: TileAnimations;
+  animation: TileAnimations;
+  index: number;
 }
 
 interface TileProps {
@@ -17,9 +18,11 @@ interface TileProps {
   tile: number
 }
 
-const AnimatedContainer = styled.div<ContainerProps>`
-  ${props => StyleHelpers.tileAnimation(props.animation)}
-`
+const AnimatedContainer = styled.div<ContainerProps>(({animation, index}) => {
+  return css`
+    ${StyleHelpers.tileAnimation({ animation, index })}
+  `
+})
 
 const Container = styled(AnimatedContainer)(({ theme, datastate }) => ({
   width: "100%",
@@ -48,11 +51,16 @@ export const Tile = ({row, tile}: TileProps) => {
 
   const onAnimationEnd = (event: React.SyntheticEvent) => {
     event.stopPropagation();
-    dispatch(endTileAnimation([row, tile]))
+
+    if(animation === TileAnimations.FLIP_IN) {
+      dispatch(updateDataState([row, tile]));
+    } else {
+      dispatch(endTileAnimation([row, tile]))
+    }
   }
 
   return (
-    <Container datastate={datastate} animation={animation} onAnimationEnd={onAnimationEnd}>
+    <Container index={tile} datastate={datastate} animation={animation} onAnimationEnd={onAnimationEnd}>
       <Letter>{letter}</Letter>
     </Container>
   )

@@ -8,6 +8,11 @@ interface StateBasedStyleProps {
   theme: Theme;
 }
 
+interface ITileAnimations {
+  animation: TileAnimations;
+  index: number;
+}
+
 export const stateBasedBackgrounds = ({datastate, theme}:StateBasedStyleProps) => {
   switch(datastate) {
     case DataStates.ABSENT:
@@ -62,10 +67,39 @@ const PopInAnimation = css`
   animation-duration: 100ms;
 `
 
-export const tileAnimation = (animation?: TileAnimations ) => {
-  switch(animation) {
+const FlipIn = keyframes`
+  0% { transform: rotateX(0); }
+  100% { transform: rotateX(-90deg); }
+`
+
+const FlipInAnimation = ({index}: ITileAnimations) => css`
+  animation-name: ${FlipIn};
+  animation-duration: 250ms;
+  animation-delay: ${index * 250}ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+`
+
+const FlipOut = keyframes`
+  0% { transform: rotateX(-90deg); }
+  100% { transform: rotateX(0); }
+`
+
+const FlipOutAnimation = css`
+  animation-name: ${FlipOut};
+  animation-duration: 250ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+`
+
+export const tileAnimation = (props: ITileAnimations) => {
+  switch(props.animation) {
     case TileAnimations.POP:
       return PopInAnimation
+    case TileAnimations.FLIP_IN:
+      return FlipInAnimation(props);
+    case TileAnimations.FLIP_OUT:
+      return FlipOutAnimation
     default:
       return ''
   }
