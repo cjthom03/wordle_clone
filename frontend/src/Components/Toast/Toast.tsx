@@ -17,15 +17,16 @@ const Snackbar = styled((props) => <MuiSnackbar {...props} />)(({theme}) => ({
 
 
 export const Toast = () => {
-  const { open, message } = useAppSelector((state) => state.toast)
+  const { open, message, sticky } = useAppSelector((state) => state.toast)
   const dispatch = useAppDispatch();
+  const autoHideDuration = sticky ? null : 1000;
 
   return(
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={open}
       onClose={() => dispatch(closeToast())}
-      autoHideDuration={1000}
+      autoHideDuration={autoHideDuration}
       TransitionComponent={Fade}
       transitionDuration={{ exit: 350 }}
       message={message}

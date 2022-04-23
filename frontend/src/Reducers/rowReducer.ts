@@ -59,11 +59,11 @@ export const checkRow = createAsyncThunk<{}, undefined, { state: RootState }>(
     const guess = state.rows[currentRow].guess
 
     if(guess.length !== TileCount) {
-      thunkApi.dispatch(openToast('Not enough letters'))
+      thunkApi.dispatch(openToast({message: 'Not enough letters'}))
       thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
       return thunkApi.rejectWithValue('Too Soon')
     } else if(!WordHelpers.wordExists(state.words.allWords, guess)) {
-      thunkApi.dispatch(openToast('Not in word list'))
+      thunkApi.dispatch(openToast({message: 'Not in word list'}))
       thunkApi.dispatch(startAnimation(RowAnimations.SHAKE))
       return thunkApi.rejectWithValue('Bad Word')
     } else if(currentRow < RowCount) {

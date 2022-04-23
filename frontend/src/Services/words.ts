@@ -12,8 +12,13 @@ export const wordApi = createApi({
         return { data: REAL_WORDS }
       }
     }),
+    getWord: build.query<string, void>({
+      queryFn: () => {
+        return { data: CORRECT_WORD }
+      }
+    }),
     testWord: build.query<TWordTestResult , string>({
-      queryFn: async (word) => {
+      queryFn: (word) => {
         return { data: testWordResults(word) }
       }
     })

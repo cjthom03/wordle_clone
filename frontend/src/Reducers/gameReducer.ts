@@ -5,6 +5,7 @@ import { setRowState, nextRow } from '../Reducers/rowReducer';
 import { openToast } from '../Reducers/toastReducer';
 import { RowCount } from '../Components/Board/Board';
 import { RowStates, letterTestToDatastate, DataStates, GameStatus } from '../Types';
+import { wordApi } from '../Services/words';
 
 export interface GameState {
   status: GameStatus
@@ -28,17 +29,19 @@ const winMessage = (row: number): string => {
 
 export const checkStatus = createAsyncThunk<void, number, { state: RootState }>(
   'game/checkStatus',
-  (row, thunkApi) => {
+  async (row, thunkApi) => {
     const testResults = thunkApi.getState().rows[row].testResults;
     const won = testResults.every((result) => result === letterTestToDatastate[DataStates.CORRECT])
 
     if(won) {
       thunkApi.dispatch(setStaus(GameStatus.WON))
       thunkApi.dispatch(setRowState(RowStates.COMPLETE))
-      thunkApi.dispatch(openToast(winMessage(row)))
+      thunkApi.dispatch(openToast({ message: winMessage(row) }))
     } else if(row === RowCount - 1) {
       thunkApi.dispatch(setStaus(GameStatus.LOST))
       thunkApi.dispatch(setRowState(RowStates.COMPLETE))
+      const correctWord = await thunkApi.dispatch(wordApi.endpoints.getWord.initiate())
+      thunkApi.dispatch(openToast({ message: `The word was ${correctWord.data}`, sticky: true }))
     } else {
       thunkApi.dispatch(nextRow())
       thunkApi.dispatch(setRowState(RowStates.IDLE))
