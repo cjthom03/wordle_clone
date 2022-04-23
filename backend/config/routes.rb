@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
+  resources :words, only: [:index]
+
   # Reroute anything to home
   get '*path', to: redirect('/')
 end

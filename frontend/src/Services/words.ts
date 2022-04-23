@@ -1,16 +1,14 @@
 import { createApi, fetchBaseQuery  } from '@reduxjs/toolkit/query/react'
-import { REAL_WORDS, CORRECT_WORD } from '../dummyData';
+import { CORRECT_WORD } from '../dummyData';
 
 type TWordTestResult = number[]
 
 export const wordApi = createApi({
   reducerPath: 'wordApi',
-  baseQuery: fetchBaseQuery(),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/' }),
   endpoints: (build) => ({
     getWords: build.query<Array<string>, void>({
-      queryFn: () => {
-        return { data: REAL_WORDS }
-      }
+      query: () => 'words'
     }),
     getWord: build.query<string, void>({
       queryFn: () => {
