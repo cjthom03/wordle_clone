@@ -1,0 +1,47 @@
+import { createSlice, PayloadAction, createAsyncThunk  } from '@reduxjs/toolkit'
+
+import { RootState } from '../store';
+import { setRowState, nextRow } from '../Reducers/rowReducer';
+import { RowCount } from '../Components/Board/Board';
+import { RowStates, letterTestToDatastate, DataStates, GameStatus } from '../Types';
+
+export interface GameState {
+  status: GameStatus
+}
+
+const initialGameState: GameState = {
+  status: GameStatus.PLAYING
+}
+
+export const checkStatus = createAsyncThunk<void, number, { state: RootState }>(
+  'game/checkStatus',
+  (row, thunkApi) => {
+    const testResults = thunkApi.getState().rows[row].testResults;
+    const won = testResults.every((result) => result === letterTestToDatastate[DataStates.CORRECT])
+
+    if(won) {
+      thunkApi.dispatch(setStaus(GameStatus.WON))
+      thunkApi.dispatch(setRowState(RowStates.COMPLETE))
+    } else if(row === RowCount - 1) {
+      thunkApi.dispatch(setStaus(GameStatus.LOST))
+      thunkApi.dispatch(setRowState(RowStates.COMPLETE))
+    } else {
+      thunkApi.dispatch(nextRow())
+      thunkApi.dispatch(setRowState(RowStates.IDLE))
+    }
+  }
+)
+
+export const gameSlice = createSlice({
+  name: 'game',
+  initialState: initialGameState,
+  reducers: {
+    setStaus: (state, action: PayloadAction<GameStatus>) => {
+      state.status = action.payload;
+    },
+  }
+})
+
+export const { setStaus } = gameSlice.actions
+
+export const gameReducer = gameSlice.reducer
