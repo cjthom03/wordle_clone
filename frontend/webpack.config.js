@@ -7,6 +7,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.jsx', '...'],
@@ -56,9 +57,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new ESLintPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'index.html'),
     }),
+    new ESLintPlugin(),
   ],
 };
