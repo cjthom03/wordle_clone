@@ -1,13 +1,5 @@
 class WordsController < ApplicationController
   def index
-    render json: [
-        'smart',
-        'power',
-        'apple',
-        'black',
-        'money',
-        'adieu',
-        'first',
-    ]
+    render json: Dictionary.all.map(:word)
   end
 end
