@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk  } from '@reduxjs/toolkit'
 
 import { RootState } from '../store';
 import { setRowState, nextRow } from '../Reducers/rowReducer';
+import { openToast } from '../Reducers/toastReducer';
 import { RowCount } from '../Components/Board/Board';
 import { RowStates, letterTestToDatastate, DataStates, GameStatus } from '../Types';
 
@@ -13,6 +14,18 @@ const initialGameState: GameState = {
   status: GameStatus.PLAYING
 }
 
+const winMessage = (row: number): string => {
+  let message = 'You did it!';
+
+  if(row === RowCount - 1) {
+    message = 'Phew'
+  } else if(row === RowCount - 2) {
+    message = 'That was close...'
+  }
+
+  return message;
+}
+
 export const checkStatus = createAsyncThunk<void, number, { state: RootState }>(
   'game/checkStatus',
   (row, thunkApi) => {
@@ -22,6 +35,7 @@ export const checkStatus = createAsyncThunk<void, number, { state: RootState }>(
     if(won) {
       thunkApi.dispatch(setStaus(GameStatus.WON))
       thunkApi.dispatch(setRowState(RowStates.COMPLETE))
+      thunkApi.dispatch(openToast(winMessage(row)))
     } else if(row === RowCount - 1) {
       thunkApi.dispatch(setStaus(GameStatus.LOST))
       thunkApi.dispatch(setRowState(RowStates.COMPLETE))
