@@ -30,7 +30,8 @@ RUN apk add --update --no-cache \
 # sqlite, sqlite-dev -> remove id another DB is added to replace sqlite3
 
 
-ENV BUNDLER_VERSION=2.3.7
+ENV BUNDLER_VERSION 2.3.7
+ENV RAILS_ENV production
 RUN gem install bundler -v $BUNDLER_VERSION
 
 
@@ -39,8 +40,9 @@ WORKDIR /usr/src/app
 COPY Gemfile Gemfile.lock ./
 
 RUN bundle config build.nokogiri --use-system-libraries
-RUN bundle install
+RUN bundle install --without development test
 
 COPY . .
 
-CMD ["rails", "server", "-b", "0.0.0.0"]
+EXPOSE 3000
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
