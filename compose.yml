@@ -31,7 +31,9 @@ services:
 
 volumes:
   wordle_data:
+    name: wordle_data
   wordle_data_config:
+    name: wordle_data_config
 
 networks:
   back_tier:
