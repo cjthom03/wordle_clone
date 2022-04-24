@@ -1,20 +1,18 @@
 services:
   database:
     image: mongo:5.0.7
+    container_name: wordle_database
     environment:
       MONGO_INITDB_DATABASE: wordle_clone_production
-    ports:
-      - 27017:27017
     networks:
       back_tier:
-        aliases:
-          - wordle_db
   backend:
-    image: wordle_clone:latest
+    image: wordle_backend:latest
+    container_name: wordle_backend
     build:
       context: ./backend
       args:
-        MONGODB_URI: mongodb://wordle_db:27017/wordle_clone_production
+        MONGODB_URI: mongodb://wordle_database:27017/wordle_clone_production
     ports:
       - 3000:3000
     depends_on:
@@ -23,6 +21,7 @@ services:
       - back_tier
   frontend:
     image: wordle_frontend:latest
+    container_name: wordle_frontend
     build: ./frontend
     ports:
       - 8080:8080

@@ -18,8 +18,7 @@ COPY . ./
 # build the app
 RUN yarn build
 
-
 # Build stage 2: Start the server
-FROM nginx
+FROM nginx:1.21.6
 COPY --from=compiler /app/nginx.conf /etc/nginx/nginx.conf
 COPY --from=compiler /app/dist /app/dist
