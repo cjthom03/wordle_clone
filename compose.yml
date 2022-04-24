@@ -4,6 +4,9 @@ services:
     container_name: wordle_database
     environment:
       MONGO_INITDB_DATABASE: wordle_clone_production
+    volumes:
+      - wordle_data:/data/db
+      - wordle_data_config:/data/configdb
     networks:
       back_tier:
   backend:
@@ -25,6 +28,10 @@ services:
     build: ./frontend
     ports:
       - 8080:8080
+
+volumes:
+  wordle_data:
+  wordle_data_config:
 
 networks:
   back_tier:
