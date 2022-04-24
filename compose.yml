@@ -24,13 +24,8 @@ services:
   frontend:
     image: wordle_frontend:latest
     build: ./frontend
-  server:
-    image: server:latest
-    build: ./server
     ports:
       - 8080:8080
-    depends_on:
-      - frontend
 
 networks:
   back_tier:

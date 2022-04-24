@@ -1,5 +1,5 @@
-# pull official base image
-FROM node:17-alpine
+# Build stage 1: Compile all the assets for front end consumption
+FROM node:17-alpine as compiler
 
 # set working directory
 WORKDIR /app
@@ -17,3 +17,9 @@ COPY . ./
 
 # build the app
 RUN yarn build
+
+
+# Build stage 2: Start the server
+FROM nginx
+COPY --from=compiler /app/nginx.conf /etc/nginx/nginx.conf
+COPY --from=compiler /app/dist /app/dist
