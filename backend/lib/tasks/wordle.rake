@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 namespace :wordle do
   desc 'Script to setup database and server for wordle backend'
    task :setup => :environment do

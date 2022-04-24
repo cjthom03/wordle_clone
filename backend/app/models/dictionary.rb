@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Dictionary
   include Mongoid::Document
   field :word, type: String
