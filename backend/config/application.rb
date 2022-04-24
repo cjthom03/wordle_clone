@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 require_relative "boot"
 
 # Picking and choosing which framework I want
-#require "rails/all"
+# require "rails/all"
 
 # Add this require instead of "rails/all":
 require "rails"
@@ -37,9 +38,9 @@ module WordleClone
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-     config.time_zone = "UTC"
+    config.time_zone = "UTC"
     # config.eager_load_paths << Rails.root.join("extras")
-     #
+    #
     # Add Mongoid::QueryCache::Middleware at the bottom of the middleware stack
     # or before other middleware that queries MongoDB.
     config.middleware.use Mongoid::QueryCache::Middleware
